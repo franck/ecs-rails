@@ -31,12 +31,10 @@ module EcsRails
       end
 
       def selected_service
-        puts("Selected cluster: #{selected_cluster}")
         @selected_service ||= EcsRails::ServiceSelector.new(client, selected_cluster, service_name).call
       end
 
       def task_id
-        puts("Selected service: #{selected_service}")
         @task_id ||= EcsRails::TaskSelector.new(client, selected_cluster, selected_service).call
       end
 

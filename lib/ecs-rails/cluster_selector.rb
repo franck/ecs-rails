@@ -38,10 +38,7 @@ module EcsRails
       attr_reader :client, :filter
 
       def connecting_to_cluster(cluster_name)
-        puts('')
         puts("Connecting to cluster '#{cluster_name}':")
-        puts('')
-        puts('=' * 50)
       end
 
       def ask_for_cluster(clusters)

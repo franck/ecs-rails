@@ -27,20 +27,8 @@ module EcsRails
             puts("      Task: #{task_arns.first}")
               return task_arns.first
           else
-            tasks_for_deployment.each_with_index do |task, index|
-              puts("#{index+1}. Task: #{task.task_arn.split('/').last}, Last Status: #{task.last_status}, Desired Status: #{task.desired_status}")
-            end
+            ask_for_task(tasks_for_deployment)
           end
-
-          selection = $stdin.gets.chomp.to_i
-          puts("Selected task: #{tasks_for_deployment[selection - 1].task_arn}")
-
-            unless selection.between?(1, task_arns.size)
-              puts('Invalid selection.')
-              exit
-            end
-
-          return task_arns[selection - 1]
         end
       end
     end
@@ -48,5 +36,12 @@ module EcsRails
     private
 
       attr_reader :client, :cluster_name, :service_name
+
+      def ask_for_task(tasks)
+        prompt = TTY::Prompt.new
+        choices = tasks.map { |task| task.split('/').last }
+        choice = prompt.enum_select("Select a task:", choices)
+        tasks.grep(Regexp.new(choice)).first
+      end
   end
 end

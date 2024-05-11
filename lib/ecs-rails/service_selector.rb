@@ -43,10 +43,7 @@ module EcsRails
       attr_reader :client, :cluster, :service_filter
 
       def connecting_to_service(service_name)
-        puts('')
         puts("Connecting to service '#{service_name}':")
-        puts('')
-        puts('=' * 50)
       end
 
       def ask_for_service(services)

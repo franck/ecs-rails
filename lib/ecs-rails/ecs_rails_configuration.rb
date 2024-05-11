@@ -12,10 +12,10 @@ module EcsRails
     end
 
     def initialize
-      @aws_region = 'us-east-1'
-      @aws_access_key_id = nil
-      @aws_secret_access_key = nil
-      @container_name = nil
+      @aws_region = ENV['AWS_REGION'] || 'us-east-1'
+      @aws_access_key_id = ENV['AWS_ACCESS_KEY_ID']
+      @aws_secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
+      @container_name = ENV['CONTAINER_NAME'] || 'webapp'
     end
 
     def aws_region=(region)

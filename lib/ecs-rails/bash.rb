@@ -1,5 +1,5 @@
 module EcsRails
-  class Console < Command
+  class Bash < Command
 
     def call
       return full_command if test_mode?
@@ -16,7 +16,7 @@ module EcsRails
 
 
       def command
-        "bundle exec rails console"
+        "bash"
       end
   end
 end

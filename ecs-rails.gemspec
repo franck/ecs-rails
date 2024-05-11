@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'byebug', '~> 11.1'
   s.add_development_dependency 'rspec', '~> 3.6', '>= 3.6.0'
 
-  s.add_runtime_dependency "aws-sdk-ecs", "> 1.132"
-  s.add_runtime_dependency "aws-sdk-ec2", "> 1.425"
-  s.add_runtime_dependency "io/console", "> 0.7.1"
+  s.add_runtime_dependency "aws-sdk-ecs", "~> 1.132", "> 1.132"
+  s.add_runtime_dependency "aws-sdk-ec2", "~> 1.425", "> 1.425"
+  s.add_runtime_dependency "tty-prompt", "~> 0.23", "> 0.23"
 end

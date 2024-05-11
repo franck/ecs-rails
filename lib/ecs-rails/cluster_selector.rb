@@ -18,45 +18,38 @@ module EcsRails
         exit
       end
 
-      puts('=' * 50)
-      puts('Clusters found:')
-      clusters.each_with_index do |cluster, index|
-        puts("#{index + 1}. #{cluster.split('/').last}")
-      end
-      puts('=' * 50)
-
-
       if filter
         filtered_clusters = clusters.select { |cluster| cluster.include?(filter) }
+
         if filtered_clusters.empty?
-          puts("No clusters found with the filter '#{filter}'.")
+          puts("No clusters found with this keyword '#{filter}'.")
           exit
-        else
-          puts('')
-          puts("Connecting to cluster '#{filtered_clusters.first}':")
-          puts('')
-          puts('=' * 50)
         end
-        filtered_clusters.first
+
+        connecting_to_cluster(filtered_clusters.first)
+        return filtered_clusters.first
       else
-        puts('Select a cluster:')
-        clusters.each_with_index do |cluster, index|
-          puts("#{index + 1}. #{cluster.split('/').last}")
-        end
-
-        selection = $stdin.gets.chomp.to_i
-        unless selection.between?(1, clusters.size)
-          puts('Invalid selection.')
-          exit
-        end
-
-        clusters[selection - 1]
+        ask_for_cluster(clusters)
       end
     end
 
     private
 
       attr_reader :client, :filter
+
+      def connecting_to_cluster(cluster_name)
+        puts('')
+        puts("Connecting to cluster '#{cluster_name}':")
+        puts('')
+        puts('=' * 50)
+      end
+
+      def ask_for_cluster(clusters)
+        prompt = TTY::Prompt.new
+        choices = clusters.map { |cluster| cluster.split('/').last }
+        choice = prompt.enum_select("Select a cluster:", choices)
+        clusters.grep(Regexp.new(choice)).first
+      end
 
   end
 end

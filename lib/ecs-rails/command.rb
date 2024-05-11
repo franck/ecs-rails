@@ -1,8 +1,9 @@
 module EcsRails
   class Command
 
-    def initialize(cluster_name = nil)
+    def initialize(cluster_name = nil, service_name = nil)
       @cluster_name = cluster_name
+      @service_name = service_name
     end
 
     def call
@@ -11,7 +12,7 @@ module EcsRails
 
     private
 
-      attr_reader :cluster_name
+      attr_reader :cluster_name, :service_name
 
       def client
         client = EcsRails::Client.new.client
@@ -31,12 +32,16 @@ module EcsRails
 
       def selected_service
         puts("Selected cluster: #{selected_cluster}")
-        @selected_service ||= EcsRails::ServiceSelector.new(client, selected_cluster).call
+        @selected_service ||= EcsRails::ServiceSelector.new(client, selected_cluster, service_name).call
       end
 
       def task_id
         puts("Selected service: #{selected_service}")
         @task_id ||= EcsRails::TaskSelector.new(client, selected_cluster, selected_service).call
+      end
+
+      def test_mode?
+        defined?(RSpec)
       end
   end
 end

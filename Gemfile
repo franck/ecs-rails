@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-# gemspec
+gemspec
 
 gem 'byebug'
 gem 'rspec', '~> 3.0'

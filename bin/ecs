@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require_relative '../lib/ecs-rails'
+
+EcsRails.aws_region = ENV['AWS_REGION']
+EcsRails.aws_access_key_id = ENV['AWS_ACCESS_KEY_ID']
+EcsRails.aws_secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
+EcsRails.container_name = 'webapp'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: ecsconsole [options]"
+
+  opts.on("-c", "--cluster CLUSTER_STRING", "Give a substring present in your cluster name. Ex: 'ecs prod' to connect to cluster webapp-cluster-prod-e950a13") do |c|
+    options[:cluster] = c
+  end
+end.parse!
+
+command_keyword = ARGV[0]
+
+command = EcsRails::CommandFactory.new(command_keyword, options).command
+
+command.call

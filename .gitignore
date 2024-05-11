@@ -1,0 +1,5 @@
+*.gem
+.env*
+.byebug_history
+Gemfile.lock
+

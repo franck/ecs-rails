@@ -11,7 +11,7 @@ module EcsRails
     attr_accessor :container_name
 
     def self.delegated
-      public_instance_methods - Singleton.instance_methods
+      public_instance_methods - superclass.public_instance_methods - Singleton.instance_methods
     end
 
     def initialize

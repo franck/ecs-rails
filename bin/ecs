@@ -2,6 +2,7 @@
 
 require 'byebug'
 require 'optparse'
+
 require_relative '../lib/ecs-rails'
 
 options = {}
@@ -15,8 +16,22 @@ OptionParser.new do |opts|
   opts.on("-s", "--service SERVICE_STRING", "Give a substring present in your service name. Ex: 'ecs console -c prod -s app' to connect to service webapp-app-prod-7c7cad7") do |c|
     options[:service] = c
   end
+
+  opts.on("-f", "--file-path FILE_PATH", "file path to yaml config file") do |c|
+    options[:config_file] = c
+  end
+
 end.parse!
 
 command_keyword = ARGV[0]
+
+if !options[:config_file].nil?
+  EcsRails.load_settings(options[:config_file])
+else
+  EcsRails.aws_region = ENV['AWS_REGION']
+  EcsRails.aws_access_key_id = ENV['AWS_ACCESS_KEY_ID']
+  EcsRails.aws_secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
+  EcsRails.container_name = ENV['CONTAINER_NAME'] || 'webapp'
+end
 
 EcsRails::CommandExecutor.call(command_keyword, options)

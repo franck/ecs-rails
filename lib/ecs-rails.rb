@@ -24,21 +24,19 @@ require_relative 'ecs-rails/console'
 require_relative 'ecs-rails/bash'
 require_relative 'ecs-rails/null_command'
 
+# delegate
+require 'active_support/core_ext/module/delegation'
 
 # prompt
 require "tty-prompt"
 
 module EcsRails
 
-  @configuration = EcsRails::EcsRailsConfiguration.setup
-
   class << self
-    extend Forwardable
-
-    def_delegators :@configuration, :aws_region, :aws_region=
-    def_delegators :@configuration, :aws_access_key_id, :aws_access_key_id=
-    def_delegators :@configuration, :aws_secret_access_key, :aws_secret_access_key=
-    def_delegators :@configuration, :container_name, :container_name=
+    def config
+      EcsRails::EcsRailsConfiguration.instance
+    end
+    delegate(*EcsRails::EcsRailsConfiguration.delegated, to: :config)
   end
 
 end
